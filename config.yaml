@@ -1,0 +1,72 @@
+version: v1alpha4
+clusters:
+  - name: artem
+    stage: dev
+    type: hub
+    dnsName: artem-dev.stackit.run
+    ssoOrg: la-demos
+    ssoTeam: g-gitops
+    ingressClassName: traefik
+    terraform:
+      provider: stackit
+      projectId: 38867e9e-b5d4-4a85-97a8-0a944ab75b19
+      kubernetesType: ske
+      kubernetesVersion: "1.35"
+      dns:
+        name: artem-dev.stackit.run
+        email: artem.lajko@iits-consulting.de
+    argocd:
+      selfManaged: enabled
+      repo:
+        https:
+          configs:
+            url: https://github.com/la-cc/kubara-remote-university.git
+            targetRevision: main
+          components:
+            url: https://github.com/la-cc/kubara-remote-university.git
+            targetRevision: main
+    catalogs:
+      - oci://ghcr.io/kubara-io/catalogs/general:2.0.0
+    services:
+      cert-manager:
+        status: enabled
+        config:
+          clusterIssuer:
+            email: artem.lajko@iits-consulting.de
+            name: letsencrypt-prod
+            server: https://acme-v02.api.letsencrypt.org/directory
+      external-dns:
+        status: enabled
+      external-secrets:
+        status: enabled
+      homer-dashboard:
+        status: enabled
+      kube-prometheus-stack:
+        status: enabled
+      kyverno:
+        status: enabled
+      kyverno-policies:
+        status: enabled
+      kyverno-policy-reporter:
+        status: enabled
+      loki:
+        status: enabled
+      longhorn:
+        status: disabled
+      metallb:
+        status: disabled
+      metrics-server:
+        status: disabled
+      oauth2-proxy:
+        status: enabled
+      reloader:
+        status: disabled
+      traefik:
+        status: enabled
+      velero:
+        status: disabled
+        config:
+          backupMode: fs-backup
+          backupStorage:
+            create: true
+            region: eu01
