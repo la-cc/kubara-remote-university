@@ -41,6 +41,8 @@ clusters:
         status: enabled
       homer-dashboard:
         status: enabled
+      kro:
+        status: disabled
       kube-prometheus-stack:
         status: enabled
       kyverno:
@@ -59,9 +61,15 @@ clusters:
         status: disabled
       oauth2-proxy:
         status: enabled
+      projectsveltos:
+        status: enabled
       reloader:
         status: disabled
       traefik:
+        status: enabled
+      vcluster:
+        status: disabled
+      vcluster-platform:
         status: enabled
       velero:
         status: disabled
@@ -70,3 +78,12 @@ clusters:
           backupStorage:
             create: true
             region: eu01
+  - name: vcluster-1
+    stage: dev
+    type: spoke
+    dnsName: vcluster-1-dev.stackit.run
+    catalogs:
+      - my-catalog
+    services:
+      kro:
+        status: enabled

@@ -25,6 +25,17 @@ bootstrapValues:
           - kind: Secret
             name: cert-manager-webhook-ca
 
+  cluster:
+    - name: vcluster-1
+      project: artem-dev
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: artem-dev
+      remoteRef:
+        remoteKey: artem/dev/argocd/vcluster-1-dev
+        remoteKeyProperty: kubeconfig
+      additionalLabels:
+        kro: "enabled"
 
 
   applicationSets:
@@ -55,6 +66,9 @@ bootstrapValues:
         homer-dashboard:
           name: homer-dashboard
           path: homer-dashboard
+        kro:
+          name: kro
+          path: kro
         kube-prometheus-stack:
           name: kube-prometheus-stack
           path: kube-prometheus-stack
@@ -83,12 +97,21 @@ bootstrapValues:
         oauth2-proxy:
           name: oauth2-proxy
           path: oauth2-proxy
+        projectsveltos:
+          name: projectsveltos
+          path: projectsveltos
         reloader:
           name: reloader
           path: reloader
         traefik:
           name: traefik
           path: traefik
+        vcluster:
+          name: vcluster
+          path: vcluster
+        vcluster-platform:
+          name: vcluster-platform
+          path: vcluster-platform
         velero:
           name: velero
           path: velero
@@ -106,6 +129,7 @@ inClusterSecretLabels:
   external-dns: "enabled"
   external-secrets: "enabled"
   homer-dashboard: "enabled"
+  kro: "disabled"
   kube-prometheus-stack: "enabled"
   kyverno: "enabled"
   kyverno-policies: "enabled"
@@ -115,8 +139,11 @@ inClusterSecretLabels:
   metallb: "disabled"
   metrics-server: "disabled"
   oauth2-proxy: "enabled"
+  projectsveltos: "enabled"
   reloader: "disabled"
   traefik: "enabled"
+  vcluster: "disabled"
+  vcluster-platform: "enabled"
   velero: "disabled"
 
 externalSecrets:
