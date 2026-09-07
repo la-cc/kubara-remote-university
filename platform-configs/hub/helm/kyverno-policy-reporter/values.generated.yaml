@@ -4,7 +4,7 @@
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
 policy-reporter:
   imagePullSecrets:
@@ -15,7 +15,7 @@ policy-reporter:
   monitoring:
     serviceMonitor:
       labels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
   ui:
     enabled: true
     ingress:
@@ -28,14 +28,14 @@ policy-reporter:
             oauth2-proxy-oauth-auth@kubernetescrd,
             kyverno-policy-reporter-strip-kyverno-prefix@kubernetescrd
       hosts:
-        - host: artem-dev.stackit.run
+        - host: hub-dev.stackit.run
           paths:
             - path: "/kyverno"
               pathType: Prefix
       tls:
         - secretName: tls-kyverno-ui
           hosts:
-            - artem-dev.stackit.run
+            - hub-dev.stackit.run
 
 middleware:
   name: strip-kyverno-prefix

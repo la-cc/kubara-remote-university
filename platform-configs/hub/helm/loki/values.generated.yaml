@@ -4,7 +4,7 @@
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/audit: privileged
@@ -22,7 +22,7 @@ loki:
       enabled: true
       
       labels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   loki:
     imagePullSecrets:
       - name: image-pull-secret
@@ -85,6 +85,6 @@ alloy:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring.instance: artem-dev
+      monitoring.instance: hub-dev
     prometheusRule:
       enabled: false

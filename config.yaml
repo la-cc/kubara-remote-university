@@ -1,9 +1,9 @@
 version: v1alpha4
 clusters:
-  - name: artem
+  - name: hub
     stage: dev
     type: hub
-    dnsName: artem-dev.stackit.run
+    dnsName: hub-dev.stackit.run
     ssoOrg: la-demos
     ssoTeam: g-gitops
     ingressClassName: traefik
@@ -13,7 +13,7 @@ clusters:
       kubernetesType: ske
       kubernetesVersion: "1.35"
       dns:
-        name: artem-dev.stackit.run
+        name: hub-dev.stackit.run
         email: artem.lajko@iits-consulting.de
     argocd:
       selfManaged: enabled

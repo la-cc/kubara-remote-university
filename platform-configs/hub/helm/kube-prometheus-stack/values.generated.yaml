@@ -10,15 +10,15 @@ kube-prometheus-stack:
   prometheusOperator:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
     prometheus:
       monitor:
         additionalLabels:
-          monitoring.instance: artem-dev
+          monitoring.instance: hub-dev
   prometheus:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
     ingress:
       ingressClassName: traefik
       annotations:
@@ -29,18 +29,18 @@ kube-prometheus-stack:
         - /prometheus
       pathType: ImplementationSpecific
       hosts:
-        - artem-dev.stackit.run
+        - hub-dev.stackit.run
       tls:
         - secretName: tls-prometheus
           hosts:
-            - artem-dev.stackit.run
+            - hub-dev.stackit.run
 
 
     prometheusSpec:
       retention: 10d
       serviceMonitorSelector:
         matchLabels:
-          monitoring.instance: artem-dev
+          monitoring.instance: hub-dev
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -49,16 +49,16 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
-      externalUrl: https://artem-dev.stackit.run/prometheus
+      externalUrl: https://hub-dev.stackit.run/prometheus
       routePrefix: /prometheus
     thanosServiceMonitor:
       serviceMonitor:
         additionalLabels:
-          monitoring.instance: artem-dev
+          monitoring.instance: hub-dev
   alertmanager:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
     ingress:
       ingressClassName: traefik
       annotations:
@@ -69,11 +69,11 @@ kube-prometheus-stack:
         - /alertmanager
       pathType: ImplementationSpecific
       hosts:
-        - artem-dev.stackit.run
+        - hub-dev.stackit.run
       tls:
         - secretName: tls-alertmanager
           hosts:
-            - artem-dev.stackit.run
+            - hub-dev.stackit.run
 
 
 # Below is an example alertmanager.config section:
@@ -121,42 +121,42 @@ kube-prometheus-stack:
 #        - msteams-webhook-url
 #        - uptimerobot-webhook-url
 
-      externalUrl: https://artem-dev.stackit.run/alertmanager
+      externalUrl: https://hub-dev.stackit.run/alertmanager
       routePrefix: /alertmanager
 
   kube-state-metrics:
     prometheus:
       monitor:
         additionalLabels:
-          monitoring.instance: artem-dev
+          monitoring.instance: hub-dev
   kubeApiServer:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   kubelet:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   kubeControllerManager:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   coreDns:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   kubeDns:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   kubeScheduler:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   thanosRuler:
     serviceMonitor:
       additionalLabels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
   grafana:
     admin:
       existingSecret: grafana-admin-credentials
@@ -164,7 +164,7 @@ kube-prometheus-stack:
       passwordKey: admin-password
     serviceMonitor:
       labels:
-        monitoring.instance: artem-dev
+        monitoring.instance: hub-dev
     ingress:
       ingressClassName: traefik
       annotations:
@@ -174,16 +174,16 @@ kube-prometheus-stack:
       path: /grafana
       pathType: ImplementationSpecific
       hosts:
-        - artem-dev.stackit.run
+        - hub-dev.stackit.run
       tls:
         - secretName: tls-grafana
           hosts:
-            - artem-dev.stackit.run
+            - hub-dev.stackit.run
     envFromSecrets:
       - name: oauth2-credentials
     grafana.ini:
       server:
-        root_url: https://artem-dev.stackit.run/grafana/
+        root_url: https://hub-dev.stackit.run/grafana/
         serve_from_sub_path: true
       auth.github:
         name: "Github"
@@ -213,20 +213,20 @@ externalSecrets:
 
   secretStoreRef:
     kind: ClusterSecretStore
-    name: artem-dev
+    name: hub-dev
 
 
   secrets:
     grafana-admin-credentials:
       dataFrom:
-        - remoteKey: artem/dev/kube-prometheus-stack/grafana_credentials
+        - remoteKey: hub/dev/kube-prometheus-stack/grafana_credentials
     oauth2-credentials:
       dataFrom:
-        - remoteKey: artem/dev/kube-prometheus-stack/grafana_oauth2_credentials
+        - remoteKey: hub/dev/kube-prometheus-stack/grafana_oauth2_credentials
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/audit: privileged

@@ -7,7 +7,7 @@ crds:
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
 
 kyverno:
@@ -18,22 +18,22 @@ kyverno:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
   backgroundController:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
   cleanupController:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
   reportsController:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
   # FIX: https://github.com/kyverno/kyverno/issues/15116
   kyverno-api:
     labels:

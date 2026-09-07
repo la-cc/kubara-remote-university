@@ -4,26 +4,26 @@
 externalSecrets:
   secretStoreRef:
     kind: ClusterSecretStore
-    name: artem-dev
+    name: hub-dev
 
   secrets:
     external-dns-webhook:
       data:
-        - remoteKey: artem/dev/external-dns/dns_zone_admin
+        - remoteKey: hub/dev/external-dns/dns_zone_admin
           remoteKeyProperty: project_id
           secretKey: PROJECT_ID
-        - remoteKey: artem/dev/external-dns/dns_zone_admin
+        - remoteKey: hub/dev/external-dns/dns_zone_admin
           remoteKeyProperty: sa_key_json
           secretKey: SA_KEY_JSON
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
 external-dns:
-  txtOwnerId: artem-dev
+  txtOwnerId: hub-dev
   domainFilters:
-    - artem-dev.stackit.run
+    - hub-dev.stackit.run
   extraArgs:
     source:
       - traefik-proxy
@@ -76,4 +76,4 @@ external-dns:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring.instance: "artem-dev"
+      monitoring.instance: "hub-dev"

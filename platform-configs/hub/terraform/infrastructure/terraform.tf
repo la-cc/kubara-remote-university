@@ -1,8 +1,8 @@
 terraform {
   required_version = ">=1.9.3"
   backend "s3" {
-    bucket = "bucket-tf-artem-dev"
-    key    = "tf-state-artem-dev"
+    bucket = "bucket-tf-hub-dev"
+    key    = "tf-state-hub-dev"
     endpoints = {
       s3 = "https://object.storage.eu01.onstackit.cloud"
     }

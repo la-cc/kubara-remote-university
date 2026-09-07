@@ -1,11 +1,11 @@
 ### DNS
 contact_email = "artem.lajko@iits-consulting.de"
-dns_name      = "artem-dev.stackit.run"
+dns_name      = "hub-dev.stackit.run"
 
 ### Global
 project_id = "38867e9e-b5d4-4a85-97a8-0a944ab75b19"
 stage      = "dev"
-name       = "artem"
+name       = "hub"
 
 ### Secret Manager / Vault Users
 users = [

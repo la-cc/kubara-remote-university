@@ -4,20 +4,20 @@
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
 
 externalSecrets:
 
   secretStoreRef:
     kind: ClusterSecretStore
-    name: artem-dev
+    name: hub-dev
 
 
   secrets:
     oauth2-credentials:
       dataFrom:
-        - remoteKey: artem/dev/oauth2-proxy/oauth2_credentials
+        - remoteKey: hub/dev/oauth2-proxy/oauth2_credentials
 
 
 oauth2-proxy:
@@ -27,8 +27,8 @@ oauth2-proxy:
     existingSecret: oauth2-credentials
     configFile: |-
       reverse_proxy = true
-      redirect_url = "https://artem-dev.stackit.run/oauth2/callback"
-      whitelist_domains = [ "artem-dev.stackit.run" ]
+      redirect_url = "https://hub-dev.stackit.run/oauth2/callback"
+      whitelist_domains = [ "hub-dev.stackit.run" ]
       email_domains = [ "*" ]
       cookie_secure = true
       upstreams = [ "static://200" ]
@@ -44,16 +44,16 @@ oauth2-proxy:
     path: /oauth2
     pathType: Prefix
     hosts:
-      - artem-dev.stackit.run
+      - hub-dev.stackit.run
     tls:
       - secretName: tls-oauth2-proxy
         hosts:
-          - artem-dev.stackit.run
+          - hub-dev.stackit.run
   metrics:
     serviceMonitor:
       enabled: true
       labels:
-        monitoring.instance: "artem-dev"
+        monitoring.instance: "hub-dev"
 
 
 middleware:

@@ -4,7 +4,7 @@
 
 ingress:
   enabled: true
-  host: artem-dev.stackit.run
+  host: hub-dev.stackit.run
   path: "/"
   ingressClassName: traefik
   annotations:
@@ -12,14 +12,14 @@ ingress:
     traefik.ingress.kubernetes.io/router.middlewares: oauth2-proxy-oauth-auth@kubernetescrd
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
 imagePullSecrets:
   - name: image-pull-secret
 serviceMonitor:
   enabled: true
   additionalLabels:
-    monitoring.instance: "artem-dev"
+    monitoring.instance: "hub-dev"
 dashboardConfig:
   title: "kubara Developer Portal"
   subtitle: "dev"
@@ -120,7 +120,7 @@ dashboardConfig:
           target: "_blank"
         - name: "traefik"
           logo: "/assets/tools/traefik.png"
-          url: "https://artem-dev.stackit.run/traefik/dashboard/"
+          url: "https://hub-dev.stackit.run/traefik/dashboard/"
           subtitle: "Traefik Dashboard"
           target: "_blank"
     - name: "DevOps Links"

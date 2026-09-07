@@ -13,7 +13,7 @@ traefik:
       enabled: true
       entryPoints:
         - websecure
-      matchRule: Host(`artem-dev.stackit.run`) && PathPrefix(`/traefik`)
+      matchRule: Host(`hub-dev.stackit.run`) && PathPrefix(`/traefik`)
       middlewares:
         - name: oauth-auth
           namespace: traefik
@@ -37,9 +37,9 @@ traefik:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring.instance: "artem-dev"
+          monitoring.instance: "hub-dev"
 
 namespace:
   labels:
-    project-name: "artem"
+    project-name: "hub"
     stage: "dev"
