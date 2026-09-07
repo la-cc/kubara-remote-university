@@ -62,7 +62,7 @@ clusters:
       oauth2-proxy:
         status: enabled
       projectsveltos:
-        status: enabled
+        status: disabled
       reloader:
         status: disabled
       traefik:
