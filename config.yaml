@@ -67,6 +67,8 @@ clusters:
         status: disabled
       traefik:
         status: enabled
+      vcluster:
+        status: disabled
       vcluster-platform:
         status: disabled
       velero:
@@ -76,3 +78,60 @@ clusters:
           backupStorage:
             create: true
             region: eu01
+  - name: spoke-1
+    stage: dev
+    type: spoke
+    dnsName: spoke-1.hub-dev.stackit.run
+    argocd:
+      selfManaged: enabled
+      repo:
+        https:
+          configs:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+          components:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+    catalogs:
+      - my-catalog
+    services:
+      kro:
+        status: enabled
+  - name: spoke-2
+    stage: qa
+    type: spoke
+    dnsName: spoke-2.hub-dev.stackit.run
+    argocd:
+      selfManaged: enabled
+      repo:
+        https:
+          configs:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+          components:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+    catalogs:
+      - my-catalog
+    services:
+      kro:
+        status: enabled
+  - name: spoke-3
+    stage: prod
+    type: spoke
+    dnsName: spoke-3.hub-dev.stackit.run
+    argocd:
+      selfManaged: enabled
+      repo:
+        https:
+          configs:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+          components:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+    catalogs:
+      - my-catalog
+    services:
+      kro:
+        status: enabled

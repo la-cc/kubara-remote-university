@@ -25,6 +25,37 @@ bootstrapValues:
           - kind: Secret
             name: cert-manager-webhook-ca
 
+  cluster:
+    - name: spoke-1
+      project: hub-dev
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: hub-dev
+      remoteRef:
+        remoteKey: hub/dev/argocd/spoke-1-dev
+        remoteKeyProperty: kubeconfig
+      additionalLabels:
+        kro: "enabled"
+    - name: spoke-2
+      project: hub-dev
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: hub-dev
+      remoteRef:
+        remoteKey: hub/dev/argocd/spoke-2-qa
+        remoteKeyProperty: kubeconfig
+      additionalLabels:
+        kro: "enabled"
+    - name: spoke-3
+      project: hub-dev
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: hub-dev
+      remoteRef:
+        remoteKey: hub/dev/argocd/spoke-3-prod
+        remoteKeyProperty: kubeconfig
+      additionalLabels:
+        kro: "enabled"
 
 
   applicationSets:
@@ -131,6 +162,7 @@ inClusterSecretLabels:
   projectsveltos: "enabled"
   reloader: "disabled"
   traefik: "enabled"
+  vcluster: "disabled"
   vcluster-platform: "disabled"
   velero: "disabled"
 
