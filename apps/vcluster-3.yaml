@@ -11,7 +11,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: hub-dev
   sources:
-    - repoURL: https://github.com/la-cc/kubara-remote.git
+    - repoURL: https://github.com/la-cc/kubara-remote-university.git
       targetRevision: main
       path: platform-components/helm/vcluster
       helm:
