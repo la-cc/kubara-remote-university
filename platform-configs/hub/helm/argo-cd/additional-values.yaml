@@ -1,13 +1,13 @@
 bootstrapValues:
   applications:
     - destination:
-        serverName: artem
+        serverName: hub
       info:
         - name: type
           value: app-of-apps
       name: app-of-apps
       namespace: argocd
-      projectName: artem-dev
+      projectName: hub-dev
       repoUrl: https://github.com/la-cc/kubara-remote-university.git
       repoPath: apps
       ignoreDifferences:
