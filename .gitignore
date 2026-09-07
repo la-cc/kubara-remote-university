@@ -76,3 +76,4 @@ bin/
 
 secrets.tf-oauth2
 k8s.yaml
+clustersecretstore.yaml

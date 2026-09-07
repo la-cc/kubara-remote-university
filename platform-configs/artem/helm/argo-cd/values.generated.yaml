@@ -25,17 +25,6 @@ bootstrapValues:
           - kind: Secret
             name: cert-manager-webhook-ca
 
-  cluster:
-    - name: vcluster-1
-      project: artem-dev
-      secretStoreRef:
-        kind: ClusterSecretStore
-        name: artem-dev
-      remoteRef:
-        remoteKey: artem/dev/argocd/vcluster-1-dev
-        remoteKeyProperty: kubeconfig
-      additionalLabels:
-        kro: "enabled"
 
 
   applicationSets:
@@ -142,7 +131,7 @@ inClusterSecretLabels:
   projectsveltos: "enabled"
   reloader: "disabled"
   traefik: "enabled"
-  vcluster: "disabled"
+  vcluster: "enabled"
   vcluster-platform: "enabled"
   velero: "disabled"
 

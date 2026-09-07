@@ -7,6 +7,6 @@ metadata:
     kubara.io/category: multi-tenancy
 spec:
   chartPath: vcluster
-  status: disabled
+  status: enabled
   clusterTypes:
     - hub

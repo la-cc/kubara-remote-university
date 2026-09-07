@@ -1,9 +1,0 @@
-# kro:
-#   deployment:
-#     tolerations:
-#       - key: "role"
-#         operator: "Equal"
-#         value: "app"
-#         effect: "NoSchedule"
-#     nodeSelector:
-#       role: "app"

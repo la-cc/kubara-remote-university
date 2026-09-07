@@ -68,7 +68,7 @@ clusters:
       traefik:
         status: enabled
       vcluster:
-        status: disabled
+        status: enabled
       vcluster-platform:
         status: enabled
       velero:
@@ -78,12 +78,3 @@ clusters:
           backupStorage:
             create: true
             region: eu01
-  - name: vcluster-1
-    stage: dev
-    type: spoke
-    dnsName: vcluster-1-dev.stackit.run
-    catalogs:
-      - my-catalog
-    services:
-      kro:
-        status: enabled
