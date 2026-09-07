@@ -5,7 +5,7 @@ description: This Chart deploy Kubernetes Resource Operator (KRO) for managing K
 dependencies:
   - name: template-library
     repository: file://../template-library
-    version: 0.2.0
+    version: 0.2.1
   - name: kro
     version: 0.9.1
     repository: "oci://registry.k8s.io/kro/charts"

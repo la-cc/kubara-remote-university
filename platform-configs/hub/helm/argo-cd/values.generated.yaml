@@ -162,7 +162,7 @@ inClusterSecretLabels:
   projectsveltos: "disabled"
   reloader: "disabled"
   traefik: "enabled"
-  vcluster: "disabled"
+  vcluster: "enabled"
   vcluster-platform: "disabled"
   velero: "disabled"
 
