@@ -67,10 +67,8 @@ clusters:
         status: disabled
       traefik:
         status: enabled
-      vcluster:
-        status: enabled
       vcluster-platform:
-        status: enabled
+        status: disabled
       velero:
         status: disabled
         config:
