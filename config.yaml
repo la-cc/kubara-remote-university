@@ -78,6 +78,7 @@ clusters:
     stage: dev
     type: spoke
     dnsName: spoke-1.hub-dev.stackit.run
+    ingressClassName: traefik
     argocd:
       selfManaged: enabled
       repo:
@@ -97,6 +98,7 @@ clusters:
     stage: qa
     type: spoke
     dnsName: spoke-2.hub-dev.stackit.run
+    ingressClassName: traefik
     argocd:
       selfManaged: enabled
       repo:
@@ -116,6 +118,7 @@ clusters:
     stage: prod
     type: spoke
     dnsName: spoke-3.hub-dev.stackit.run
+    ingressClassName: traefik
     argocd:
       selfManaged: enabled
       repo:
