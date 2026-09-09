@@ -159,10 +159,10 @@ inClusterSecretLabels:
   metallb: "disabled"
   metrics-server: "disabled"
   oauth2-proxy: "enabled"
-  projectsveltos: "disabled"
+  projectsveltos: "enabled"
   reloader: "disabled"
   traefik: "enabled"
-  vcluster: "disabled"
+  vcluster: "enabled"
   vcluster-platform: "disabled"
   velero: "disabled"
 

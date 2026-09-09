@@ -7,7 +7,7 @@ metadata:
     kubara.io/category: application-management
 spec:
   chartPath: kro
-  status: disabled
+  status: enabled
   clusterTypes:
     - hub
     - spoke

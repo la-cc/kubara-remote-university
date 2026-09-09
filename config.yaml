@@ -61,13 +61,9 @@ clusters:
         status: disabled
       oauth2-proxy:
         status: enabled
-      projectsveltos:
-        status: disabled
       reloader:
         status: disabled
       traefik:
-        status: enabled
-      vcluster:
         status: enabled
       vcluster-platform:
         status: disabled
