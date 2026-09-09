@@ -9,4 +9,4 @@ dependencies:
     repository: https://charts.loft.sh
   - name: template-library
     repository: file://../template-library
-    version: 0.2.0
+    version: 0.2.1
