@@ -4,6 +4,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.1] - 2026-09-02
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.6.2 → 88.6.3
+
+## [3.8.0] - 2026-09-01
+### Changed
+- Updated chart dependency version: prometheus-blackbox-exporter 11.17.2 → 11.18.0
+
+## [3.7.4] - 2026-09-01
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.6.1 → 88.6.2
+
+## [3.7.3] - 2026-08-31
+### Changed
+- Updated chart dependency version: template-library 0.3.0 → 0.4.0
+
+## [3.7.2] - 2026-08-31
+### Changed
+- Updated chart dependency version: template-library 0.2.1 → 0.3.0
+
+## [3.7.1] - 2026-08-28
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.6.0 → 88.6.1
+
+## [3.7.0] - 2026-08-28
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.5.4 → 88.6.0
+
+## [3.6.3] - 2026-08-23
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.5.3 → 88.5.4
+
+## [3.6.2] - 2026-08-21
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.5.2 → 88.5.3
+
+## [3.6.1] - 2026-08-20
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.5.0 → 88.5.2
+
+## [3.6.0] - 2026-08-18
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.4.0 → 88.5.0
+
+## [3.5.0] - 2026-08-18
+### Changed
+- Updated chart dependency version: kube-prometheus-stack 88.3.0 → 88.4.0
+
 ## [3.4.0] - 2026-08-11
 ### Changed
 - Updated chart dependency version: kube-prometheus-stack 88.2.0 → 88.3.0

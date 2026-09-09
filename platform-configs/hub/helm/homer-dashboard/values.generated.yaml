@@ -16,10 +16,6 @@ namespace:
     stage: "dev"
 imagePullSecrets:
   - name: image-pull-secret
-serviceMonitor:
-  enabled: true
-  additionalLabels:
-    monitoring.instance: "hub-dev"
 dashboardConfig:
   title: "kubara Developer Portal"
   subtitle: "dev"

@@ -26,7 +26,7 @@ clusters:
             url: https://github.com/la-cc/kubara-remote-university.git
             targetRevision: main
     catalogs:
-      - oci://ghcr.io/kubara-io/catalogs/general:2.0.0
+      - oci://ghcr.io/kubara-io/catalogs/general:4.0.0
     services:
       cert-manager:
         status: enabled
