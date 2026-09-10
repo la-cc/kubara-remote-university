@@ -7,6 +7,6 @@ metadata:
     kubara.io/category: application-management
 spec:
   chartPath: projectsveltos
-  status: enabled
+  status: disabled
   clusterTypes:
     - hub

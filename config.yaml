@@ -67,6 +67,12 @@ clusters:
         status: enabled
       vcluster-platform:
         status: disabled
+      chaos-mesh:
+        status: enabled
+      chaoskube:
+        status: disabled
+      litmus:
+        status: disabled
       velero:
         status: disabled
         config:

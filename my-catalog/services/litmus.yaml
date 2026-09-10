@@ -1,0 +1,12 @@
+---
+apiVersion: kubara.io/v1alpha1
+kind: ServiceDefinition
+metadata:
+  name: litmus
+  annotations:
+    kubara.io/category: chaos-engineering
+spec:
+  chartPath: litmus
+  status: enabled
+  clusterTypes:
+    - hub

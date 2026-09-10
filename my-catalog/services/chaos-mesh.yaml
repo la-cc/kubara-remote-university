@@ -1,0 +1,12 @@
+---
+apiVersion: kubara.io/v1alpha1
+kind: ServiceDefinition
+metadata:
+  name: chaos-mesh
+  annotations:
+    kubara.io/category: chaos-engineering
+spec:
+  chartPath: chaos-mesh
+  status: enabled
+  clusterTypes:
+    - hub

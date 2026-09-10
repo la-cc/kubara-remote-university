@@ -77,6 +77,12 @@ bootstrapValues:
         cert-manager:
           name: cert-manager
           path: cert-manager
+        chaos-mesh:
+          name: chaos-mesh
+          path: chaos-mesh
+        chaoskube:
+          name: chaoskube
+          path: chaoskube
         external-dns:
           name: external-dns
           path: external-dns
@@ -101,6 +107,9 @@ bootstrapValues:
         kyverno-policy-reporter:
           name: kyverno-policy-reporter
           path: kyverno-policy-reporter
+        litmus:
+          name: litmus
+          path: litmus
         loki:
           name: loki
           path: loki
@@ -146,6 +155,8 @@ inClusterSecretLabels:
 ## Hub labels
   argocd: "enabled"
   cert-manager: "enabled"
+  chaos-mesh: "enabled"
+  chaoskube: "disabled"
   external-dns: "enabled"
   external-secrets: "enabled"
   homer-dashboard: "enabled"
@@ -154,13 +165,16 @@ inClusterSecretLabels:
   kyverno: "enabled"
   kyverno-policies: "enabled"
   kyverno-policy-reporter: "enabled"
+  litmus: "disabled"
   loki: "enabled"
   longhorn: "disabled"
   metallb: "disabled"
   metrics-server: "disabled"
   oauth2-proxy: "enabled"
+  projectsveltos: "disabled"
   reloader: "disabled"
   traefik: "enabled"
+  vcluster: "enabled"
   vcluster-platform: "disabled"
   velero: "disabled"
 
