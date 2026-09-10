@@ -23,13 +23,14 @@ users = [
 
 ### SKE
 kubernetes_version_min = "1.35"
+region = "eu02"
 node_pools = [
   {
-    availability_zones = ["eu01-2"]
-    machine_type       = "c2i.8"
+    availability_zones = ["eu02-2"]
+    machine_type       = "g3i.4"
     volume_size        = 30
-    maximum            = 4
-    minimum            = 2
+    maximum            = 6
+    minimum            = 4
     name               = "pool-infra"
     labels = {
       "role" = "infra"

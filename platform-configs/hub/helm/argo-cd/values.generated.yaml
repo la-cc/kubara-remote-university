@@ -155,7 +155,7 @@ inClusterSecretLabels:
 ## Hub labels
   argocd: "enabled"
   cert-manager: "enabled"
-  chaos-mesh: "enabled"
+  chaos-mesh: "disabled"
   chaoskube: "disabled"
   external-dns: "enabled"
   external-secrets: "enabled"

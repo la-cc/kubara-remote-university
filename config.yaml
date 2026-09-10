@@ -68,7 +68,7 @@ clusters:
       vcluster-platform:
         status: disabled
       chaos-mesh:
-        status: enabled
+        status: disabled
       chaoskube:
         status: disabled
       litmus:
