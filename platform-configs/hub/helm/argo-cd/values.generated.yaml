@@ -77,23 +77,6 @@ bootstrapValues:
         cert-manager:
           name: cert-manager
           path: cert-manager
-          syncPolicy:
-            automated:
-              enabled: false
-            retry:
-              limit: 5
-              refresh: true
-              backoff:
-                duration: 10s
-                factor: 2
-                maxDuration: 5m
-            syncOptions:
-              - CreateNamespace=false
-              - PruneLast=true
-              - FailOnSharedResource=true
-              - RespectIgnoreDifferences=true
-              - ApplyOutOfSyncOnly=true
-              - ServerSideApply=true
         chaos-mesh:
           name: chaos-mesh
           path: chaos-mesh
