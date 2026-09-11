@@ -35,6 +35,8 @@ clusters:
             email: artem.lajko@iits-consulting.de
             name: letsencrypt-prod
             server: https://acme-v02.api.letsencrypt.org/directory
+      crossplane:
+        status: enabled
       external-dns:
         status: enabled
       external-secrets:

@@ -160,7 +160,7 @@ inClusterSecretLabels:
   cert-manager: "enabled"
   chaos-mesh: "disabled"
   chaoskube: "disabled"
-  crossplane: "disabled"
+  crossplane: "enabled"
   external-dns: "enabled"
   external-secrets: "enabled"
   homer-dashboard: "enabled"
