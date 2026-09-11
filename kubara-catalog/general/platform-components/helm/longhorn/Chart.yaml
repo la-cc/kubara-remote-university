@@ -1,0 +1,11 @@
+---
+apiVersion: v2
+name: longhorn
+description: Umbrella Chart for longhorn
+type: application
+version: 0.4.4
+dependencies:
+  # https://artifacthub.io/packages/helm/argo/argo-cd
+  - name: longhorn
+    repository: https://charts.longhorn.io
+    version: 1.12.1

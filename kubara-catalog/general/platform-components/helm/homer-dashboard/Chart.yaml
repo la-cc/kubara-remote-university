@@ -1,0 +1,6 @@
+---
+apiVersion: v2
+name: homer-dashboard
+description: homer-dashboard
+type: application
+version: 0.1.4
