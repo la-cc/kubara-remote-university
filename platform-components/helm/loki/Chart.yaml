@@ -5,9 +5,6 @@ description: Umbrella Chart for loki
 type: application
 version: 1.9.3
 dependencies:
-  - name: template-library
-    repository: file://../template-library
-    version: 0.4.0
   - name: loki
     repository: https://grafana.github.io/helm-charts
     version: 7.3.0
