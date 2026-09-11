@@ -78,6 +78,8 @@ bootstrapValues:
           name: cert-manager
           path: cert-manager
           syncPolicy:
+            automated:
+              enabled: false
             retry:
               limit: 5
               refresh: true
