@@ -19,4 +19,4 @@ chaos-mesh:
 
   webhook:
     certManager:
-      enabled: false
+      enabled: true
