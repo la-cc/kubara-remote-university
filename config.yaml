@@ -70,7 +70,7 @@ clusters:
       vcluster-platform:
         status: disabled
       chaos-mesh:
-        status: disabled
+        status: enabled
       chaoskube:
         status: disabled
       litmus:
