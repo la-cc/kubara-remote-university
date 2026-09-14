@@ -1,1 +1,22 @@
-chaos-mesh: {}
+chaos-mesh:
+  chaosDaemon:
+    runtime: containerd
+    socketPath: /run/containerd/containerd.sock
+    resources:
+      requests: {cpu: 50m, memory: 128Mi}
+      limits: {cpu: 500m, memory: 512Mi}
+
+  controllerManager:
+    enableFilterNamespace: true
+    replicaCount: 1
+    resources:
+      requests: {cpu: 50m, memory: 128Mi}
+      limits: {cpu: 500m, memory: 512Mi}
+
+  dashboard:
+    create: true
+    securityMode: true
+
+  webhook:
+    certManager:
+      enabled: false
