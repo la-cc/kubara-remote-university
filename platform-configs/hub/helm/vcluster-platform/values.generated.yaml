@@ -14,7 +14,7 @@ vcluster-platform:
   ingress:
     enabled: true
     name: vcluster-platform-ingress
-    host: vcluster-platform.controlplane-dev.stackit.run
+    host: vcluster-platform.hub-dev.stackit.run
     ingressClass: traefik
     path: /
     annotations:
@@ -26,7 +26,7 @@ vcluster-platform:
   config:
     audit:
       enabled: true
-    loftHost: vcluster-platform.controlplane-dev.stackit.run
+    loftHost: vcluster-platform.hub-dev.stackit.run
 
   env:
     DISABLE_LOFT_ROUTER: "true"
