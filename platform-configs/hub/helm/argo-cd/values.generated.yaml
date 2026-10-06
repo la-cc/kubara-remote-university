@@ -147,8 +147,8 @@ inClusterSecretLabels:
   projectsveltos: "disabled"
   reloader: "disabled"
   traefik: "enabled"
-  vcluster: "enabled"
-  vcluster-platform: "disabled"
+  vcluster: "disabled"
+  vcluster-platform: "enabled"
   velero: "disabled"
 
 externalSecrets:
