@@ -1,0 +1,24 @@
+{{- if .Values.ingressRouteTCP.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: {{ .Release.Name }}-passthrough
+  namespace: {{ .Release.Namespace }}
+  {{- with .Values.ingressRouteTCP.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ .Release.Name }}
+    release: {{ .Release.Name }}
+spec:
+  entryPoints:
+    {{- toYaml .Values.ingressRouteTCP.entryPoints | nindent 4 }}
+  routes:
+    - match: HostSNI(`{{ required "ingressRouteTCP.host is required when ingressRouteTCP.enabled is true" .Values.ingressRouteTCP.host }}`)
+      services:
+        - name: {{ .Values.ingressRouteTCP.service.name | default .Values.tenantControlPlane.name | default .Release.Name }}
+          port: {{ .Values.ingressRouteTCP.service.port }}
+  tls:
+    passthrough: {{ .Values.ingressRouteTCP.tls.passthrough }}
+{{- end }}

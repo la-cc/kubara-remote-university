@@ -26,11 +26,18 @@ spec:
           tenantControlPlane:
             enabled: true
             name: kamaji-3
+            ingress:
+              enabled: true
+              hostname: kamaji-3.hub-dev.stackit.run:443
             networkProfile:
               certSANs:
                 - kamaji-3.hub-dev.stackit.run
-            serviceAnnotations:
-              external-dns.alpha.kubernetes.io/hostname: kamaji-3.hub-dev.stackit.run
+
+          ingressRouteTCP:
+            enabled: true
+            host: kamaji-3.hub-dev.stackit.run
+            annotations:
+              external-dns.alpha.kubernetes.io/target: hub-dev.stackit.run
   syncPolicy:
     automated:
       selfHeal: true

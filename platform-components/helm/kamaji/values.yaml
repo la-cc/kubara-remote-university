@@ -32,8 +32,13 @@ tenantControlPlane:
   annotations: {}
   dataStore: default
   replicas: 2
-  serviceType: LoadBalancer
+  serviceType: ClusterIP
   serviceAnnotations: {}
+  ingress:
+    enabled: false
+    hostname: ""
+    ingressClassName: kamaji-endpoint-only
+    annotations: {}
   kubernetesVersion: v1.35.0
   networkProfile:
     address: ""
@@ -49,3 +54,16 @@ tenantControlPlane:
     konnectivity:
       enabled: true
       serverPort: 8132
+
+ingressRouteTCP:
+  enabled: false
+  host: ""
+  entryPoints:
+    - websecure
+    - web
+  service:
+    name: ""
+    port: 6443
+  tls:
+    passthrough: true
+  annotations: {}

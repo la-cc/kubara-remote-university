@@ -4,3 +4,10 @@ kamaji:
 tenantControlPlane:
   enabled: true
   name: kamaji-ci
+  ingress:
+    enabled: true
+    hostname: kamaji-ci.example.com:443
+
+ingressRouteTCP:
+  enabled: true
+  host: kamaji-ci.example.com
