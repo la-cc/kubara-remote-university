@@ -1,8 +1,0 @@
-apiVersion: v2
-name: kro
-version: 1.0.0
-description: This Chart deploy Kubernetes Resource Operator (KRO) for managing Kubernetes resources.
-dependencies:
-  - name: kro
-    version: 0.9.1
-    repository: "oci://registry.k8s.io/kro/charts"

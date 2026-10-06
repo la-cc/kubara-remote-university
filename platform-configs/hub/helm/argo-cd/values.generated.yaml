@@ -25,37 +25,6 @@ bootstrapValues:
           - kind: Secret
             name: cert-manager-webhook-ca
 
-  cluster:
-    - name: vcluster-1
-      project: hub-dev
-      secretStoreRef:
-        kind: ClusterSecretStore
-        name: hub-dev
-      remoteRef:
-        remoteKey: hub/dev/argocd/vcluster-1-dev
-        remoteKeyProperty: kubeconfig
-      additionalLabels:
-        kro: "enabled"
-    - name: vcluster-2
-      project: hub-dev
-      secretStoreRef:
-        kind: ClusterSecretStore
-        name: hub-dev
-      remoteRef:
-        remoteKey: hub/dev/argocd/vcluster-2-qa
-        remoteKeyProperty: kubeconfig
-      additionalLabels:
-        kro: "enabled"
-    - name: vcluster-3
-      project: hub-dev
-      secretStoreRef:
-        kind: ClusterSecretStore
-        name: hub-dev
-      remoteRef:
-        remoteKey: hub/dev/argocd/vcluster-3-prod
-        remoteKeyProperty: kubeconfig
-      additionalLabels:
-        kro: "enabled"
 
 
   applicationSets:
@@ -83,9 +52,6 @@ bootstrapValues:
         chaoskube:
           name: chaoskube
           path: chaoskube
-        crossplane:
-          name: crossplane
-          path: crossplane
         external-dns:
           name: external-dns
           path: external-dns
@@ -95,6 +61,9 @@ bootstrapValues:
         homer-dashboard:
           name: homer-dashboard
           path: homer-dashboard
+        kamaji:
+          name: kamaji
+          path: kamaji
         kro:
           name: kro
           path: kro
@@ -160,10 +129,10 @@ inClusterSecretLabels:
   cert-manager: "enabled"
   chaos-mesh: "disabled"
   chaoskube: "disabled"
-  crossplane: "enabled"
   external-dns: "enabled"
   external-secrets: "enabled"
   homer-dashboard: "enabled"
+  kamaji: "enabled"
   kro: "disabled"
   kube-prometheus-stack: "enabled"
   kyverno: "enabled"

@@ -1,0 +1,61 @@
+{{- if .Values.tenantControlPlane.enabled }}
+{{- $name := required "tenantControlPlane.name is required when tenantControlPlane.enabled is true" .Values.tenantControlPlane.name }}
+apiVersion: kamaji.clastix.io/v1alpha1
+kind: TenantControlPlane
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    tenant.clastix.io: {{ $name }}
+    {{- with .Values.tenantControlPlane.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.tenantControlPlane.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  dataStore: {{ .Values.tenantControlPlane.dataStore }}
+  controlPlane:
+    deployment:
+      replicas: {{ .Values.tenantControlPlane.replicas }}
+    service:
+      serviceType: {{ .Values.tenantControlPlane.serviceType }}
+      {{- with .Values.tenantControlPlane.serviceAnnotations }}
+      additionalMetadata:
+        annotations:
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+  kubernetes:
+    version: {{ .Values.tenantControlPlane.kubernetesVersion | quote }}
+    kubelet:
+      cgroupfs: systemd
+    admissionControllers:
+      - ResourceQuota
+      - LimitRanger
+  networkProfile:
+    {{- with .Values.tenantControlPlane.networkProfile.address }}
+    address: {{ . | quote }}
+    {{- end }}
+    port: {{ .Values.tenantControlPlane.networkProfile.port }}
+    {{- with .Values.tenantControlPlane.networkProfile.certSANs }}
+    certSANs:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    serviceCidr: {{ .Values.tenantControlPlane.networkProfile.serviceCidr }}
+    podCidr: {{ .Values.tenantControlPlane.networkProfile.podCidr }}
+    dnsServiceIPs:
+      {{- toYaml .Values.tenantControlPlane.networkProfile.dnsServiceIPs | nindent 6 }}
+  addons:
+    {{- if .Values.tenantControlPlane.addons.coreDNS }}
+    coreDNS: {}
+    {{- end }}
+    {{- if .Values.tenantControlPlane.addons.kubeProxy }}
+    kubeProxy: {}
+    {{- end }}
+    {{- if .Values.tenantControlPlane.addons.konnectivity.enabled }}
+    konnectivity:
+      server:
+        port: {{ .Values.tenantControlPlane.addons.konnectivity.serverPort }}
+    {{- end }}
+{{- end }}

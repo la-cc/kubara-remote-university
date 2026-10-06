@@ -1,0 +1,51 @@
+kamaji:
+  enabled: true
+  replicaCount: 1
+  image:
+    tag: latest
+  telemetry:
+    disabled: true
+  kamaji-etcd:
+    deploy: true
+    fullnameOverride: kamaji-etcd
+    clusterDomain: cluster.local
+    selfSignedCertificates:
+      enabled: false
+    certManager:
+      enabled: true
+      issuerRef:
+        name: kamaji-selfsigned-issuer
+        kind: Issuer
+        group: cert-manager.io
+    datastore:
+      enabled: true
+      name: default
+
+namespace:
+  labels: {}
+  annotations: {}
+
+tenantControlPlane:
+  enabled: false
+  name: ""
+  labels: {}
+  annotations: {}
+  dataStore: default
+  replicas: 2
+  serviceType: LoadBalancer
+  serviceAnnotations: {}
+  kubernetesVersion: v1.35.0
+  networkProfile:
+    address: ""
+    port: 6443
+    certSANs: []
+    serviceCidr: 10.96.0.0/16
+    podCidr: 10.244.0.0/16
+    dnsServiceIPs:
+      - 10.96.0.10
+  addons:
+    coreDNS: true
+    kubeProxy: true
+    konnectivity:
+      enabled: true
+      serverPort: 8132

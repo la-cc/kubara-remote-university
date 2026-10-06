@@ -1,0 +1,6 @@
+kamaji:
+  enabled: false
+
+tenantControlPlane:
+  enabled: true
+  name: kamaji-ci

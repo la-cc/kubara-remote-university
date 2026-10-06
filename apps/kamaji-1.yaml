@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kamaji-1
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kamaji-1
+    server: "https://kubernetes.default.svc"
+  project: hub-dev
+  sources:
+    - repoURL: https://github.com/la-cc/kubara-remote-university.git
+      targetRevision: main
+      path: platform-components/helm/kamaji
+      helm:
+        ignoreMissingValueFiles: true
+        releaseName: "kamaji-1"
+        valueFiles:
+          - values.yaml
+        values: |
+          kamaji:
+            enabled: false
+
+          tenantControlPlane:
+            enabled: true
+            name: kamaji-1
+            networkProfile:
+              certSANs:
+                - kamaji-1.hub-dev.stackit.run
+            serviceAnnotations:
+              external-dns.alpha.kubernetes.io/hostname: kamaji-1.hub-dev.stackit.run
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=false
+      - PruneLast=true
+      - FailOnSharedResource=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true

@@ -1,4 +1,0 @@
----
-traefik:
-  disallowDefaultTLSOptions:
-    enabled: true
