@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: spoke-2
+  name: vcluster-2
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: spoke-2
+    namespace: vcluster-2
     server: "https://kubernetes.default.svc"
   project: hub-dev
   sources:
@@ -16,7 +16,7 @@ spec:
       path: platform-components/helm/vcluster
       helm:
         ignoreMissingValueFiles: true
-        releaseName: "spoke-2"
+        releaseName: "vcluster-2"
         valueFiles:
           - values.yaml
         values: |
@@ -24,20 +24,20 @@ spec:
             controlPlane:
               proxy:
                 extraSANs:
-                  - spoke-2.hub-dev.stackit.run
+                  - vcluster-2.hub-dev.stackit.run
               ingress:
                 enabled: false
 
           ingressRouteTCP:
             enabled: true
-            host: spoke-2.hub-dev.stackit.run
+            host: vcluster-2.hub-dev.stackit.run
             annotations:
               external-dns.alpha.kubernetes.io/target: hub-dev.stackit.run
   ignoreDifferences:
     - group: apps
       kind: StatefulSet
-      name: spoke-2
-      namespace: spoke-2
+      name: vcluster-2
+      namespace: vcluster-2
       jsonPointers:
         - /spec/updateStrategy
         - /spec/volumeClaimTemplates
