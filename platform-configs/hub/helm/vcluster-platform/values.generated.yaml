@@ -1,6 +1,6 @@
 namespace:
   labels:
-    project-name: "controlplane"
+    project-name: "hub"
     stage: "dev"
 vcluster-platform:
   admin:
