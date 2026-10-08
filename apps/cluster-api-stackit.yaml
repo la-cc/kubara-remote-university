@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-api-stackit
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: capi-operator-system
+    server: "https://kubernetes.default.svc"
+  project: hub-dev
+  sources:
+    - repoURL: https://github.com/la-cc/kubara-remote-university.git
+      targetRevision: main
+      path: platform-components/helm/cluster-api-stackit
+      helm:
+        ignoreMissingValueFiles: true
+        releaseName: cluster-api-stackit
+        valueFiles:
+          - values.yaml
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+    syncOptions:
+      - CreateNamespace=false
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true

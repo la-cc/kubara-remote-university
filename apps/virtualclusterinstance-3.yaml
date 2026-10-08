@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+  - apiVersion: management.loft.sh/v1
+    kind: VirtualClusterInstance
+    metadata:
+      name: vcluster-3
+      namespace: p-default
+    spec:
+      clusterRef:
+        cluster: loft-cluster
+        namespace: vcluster-3
+        virtualCluster: vcluster-3
+
+      displayName: vcluster-3
+      networkPeer: true
+
+      owner:
+        user: admin
+
+      template:
+        metadata: {}
+
+        instanceTemplate:
+          metadata: {}
+
+        pro:
+          enabled: true
+
+        accessPoint:
+          ingress:
+            enabled: false
+
+        helmRelease:
+          chart:
+            version: 0.37.3
+          values: |-
+            controlPlane:
+              proxy:
+                extraSANs:
+                  - vcluster-3-default.hub-dev.stackit.run
+              coredns:
+                embedded: true
+
+            sync:
+              fromHost:
+                ingressClasses:
+                  enabled: true
+              toHost:
+                ingresses:
+                  enabled: true
+
+        spaceTemplate:
+          metadata: {}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: vcluster-3-passthrough
+  namespace: vcluster-3
+  annotations:
+    external-dns.alpha.kubernetes.io/target: hub-dev.stackit.run
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: HostSNI(`vcluster-3-default.hub-dev.stackit.run`)
+      services:
+        - name: vcluster-3
+          port: 443
+  tls:
+    passthrough: true
