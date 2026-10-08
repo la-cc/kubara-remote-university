@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cluster-api-stackit
+description: Umbrella chart for Cluster API, kubeadm providers, and CAPSTK.
+type: application
+version: 1.0.0
+dependencies:
+  - name: cluster-api-operator
+    version: 0.29.0
+    repository: https://kubernetes-sigs.github.io/cluster-api-operator
