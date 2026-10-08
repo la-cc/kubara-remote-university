@@ -148,7 +148,7 @@ inClusterSecretLabels:
   reloader: "disabled"
   traefik: "enabled"
   vcluster: "disabled"
-  vcluster-platform: "disabled"
+  vcluster-platform: "enabled"
   velero: "disabled"
 
 externalSecrets:
