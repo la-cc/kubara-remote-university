@@ -1,0 +1,6 @@
+vcluster-platform:
+  # The admin user already exists from the previous installation. Platform
+  # 4.12 otherwise runs admin recovery during every startup and currently
+  # times out before leader initialization completes.
+  admin:
+    create: false
