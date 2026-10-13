@@ -1,4 +1,4 @@
-version: v1alpha4
+version: v1alpha5
 clusters:
   - name: hub
     stage: dev
@@ -18,7 +18,8 @@ clusters:
     argocd:
       selfManaged: enabled
       repo:
-        https:
+        authMode: https
+        git:
           configs:
             url: https://github.com/la-cc/kubara-remote-university.git
             targetRevision: main
@@ -26,7 +27,7 @@ clusters:
             url: https://github.com/la-cc/kubara-remote-university.git
             targetRevision: main
     catalogs:
-      - kubara-catalog/general
+      - oci://ghcr.io/kubara-io/catalogs/general:7.0.0
     services:
       cert-manager:
         status: enabled
@@ -35,13 +36,19 @@ clusters:
             email: artem.lajko@iits-consulting.de
             name: letsencrypt-prod
             server: https://acme-v02.api.letsencrypt.org/directory
-      crossplane:
+      chaos-mesh:
+        status: disabled
+      chaoskube:
+        status: disabled
+      cluster-api-stackit:
         status: enabled
       external-dns:
         status: enabled
       external-secrets:
         status: enabled
       homer-dashboard:
+        status: enabled
+      kamaji:
         status: enabled
       kro:
         status: disabled
@@ -53,6 +60,8 @@ clusters:
         status: enabled
       kyverno-policy-reporter:
         status: enabled
+      litmus:
+        status: disabled
       loki:
         status: enabled
       longhorn:
@@ -63,18 +72,16 @@ clusters:
         status: disabled
       oauth2-proxy:
         status: enabled
+      projectsveltos:
+        status: disabled
       reloader:
         status: disabled
       traefik:
         status: enabled
+      vcluster:
+        status: disabled
       vcluster-platform:
-        status: disabled
-      chaos-mesh:
         status: enabled
-      chaoskube:
-        status: disabled
-      litmus:
-        status: disabled
       velero:
         status: disabled
         config:
@@ -82,63 +89,3 @@ clusters:
           backupStorage:
             create: true
             region: eu01
-  - name: spoke-1
-    stage: dev
-    type: spoke
-    dnsName: spoke-1.hub-dev.stackit.run
-    ingressClassName: traefik
-    argocd:
-      selfManaged: enabled
-      repo:
-        https:
-          configs:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-          components:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-    catalogs:
-      - my-catalog
-    services:
-      kro:
-        status: enabled
-  - name: spoke-2
-    stage: qa
-    type: spoke
-    dnsName: spoke-2.hub-dev.stackit.run
-    ingressClassName: traefik
-    argocd:
-      selfManaged: enabled
-      repo:
-        https:
-          configs:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-          components:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-    catalogs:
-      - my-catalog
-    services:
-      kro:
-        status: enabled
-  - name: spoke-3
-    stage: prod
-    type: spoke
-    dnsName: spoke-3.hub-dev.stackit.run
-    ingressClassName: traefik
-    argocd:
-      selfManaged: enabled
-      repo:
-        https:
-          configs:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-          components:
-            url: https://git.example.com/platform/repo.git
-            targetRevision: main
-    catalogs:
-      - my-catalog
-    services:
-      kro:
-        status: enabled

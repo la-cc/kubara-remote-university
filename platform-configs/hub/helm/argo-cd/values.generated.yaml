@@ -52,6 +52,12 @@ bootstrapValues:
         chaoskube:
           name: chaoskube
           path: chaoskube
+        cluster-api-stackit:
+          name: cluster-api-stackit
+          path: cluster-api-stackit
+        crossplane:
+          name: crossplane
+          path: crossplane
         external-dns:
           name: external-dns
           path: external-dns
@@ -129,6 +135,8 @@ inClusterSecretLabels:
   cert-manager: "enabled"
   chaos-mesh: "disabled"
   chaoskube: "disabled"
+  cluster-api-stackit: "enabled"
+  crossplane: "disabled"
   external-dns: "enabled"
   external-secrets: "enabled"
   homer-dashboard: "enabled"

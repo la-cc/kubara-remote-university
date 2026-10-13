@@ -79,3 +79,7 @@ k8s.yaml
 clustersecretstore.yaml
 
 spoke-*.yaml
+
+vcluster-*.yaml
+
+kamaji-*.yaml

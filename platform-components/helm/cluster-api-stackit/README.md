@@ -15,6 +15,7 @@ worker nodes.
 The operator Helm hooks are disabled because Argo CD applies the emitted sync
 waves. Provider namespaces are created before their provider resources.
 
-See `examples/cluster-api-stackit` for a complete, explicitly applied workload
-cluster example. Installing this chart alone does not create billable STACKIT
-infrastructure.
+See the [STACKIT Cluster API guide](../../../../examples/cluster-api-stackit/README.md)
+for the architecture, installation order, provider configuration, MachineSet
+lifecycle, first workload cluster, and troubleshooting from the initial setup.
+Installing this chart alone does not create billable STACKIT infrastructure.

@@ -1,9 +1,20 @@
 ---
 namespace: {}
 kyverno:
+  global:
+    crdWatcher: true
+  features:
+    logging:
+      format: json
   crds:
     migration:
       podResources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
   test:
     resources:
       limits:
