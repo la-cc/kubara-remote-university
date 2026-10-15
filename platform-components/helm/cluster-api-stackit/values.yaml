@@ -29,10 +29,10 @@ cluster-api-operator:
   infrastructure:
     stackit:
       namespace: cluster-api-provider-stackit-system
-      version: v0.1.0-alpha.2
+      version: v0.1.0-alpha.4
       fetchConfig:
         # Keep the release tag in sync with the provider version above.
-        url: https://github.com/stackitcloud/cluster-api-provider-stackit/releases/download/v0.1.0-alpha.2/infrastructure-components.yaml
+        url: https://github.com/stackitcloud/cluster-api-provider-stackit/releases/download/v0.1.0-alpha.4/infrastructure-components.yaml
 
 namespace:
   labels: {}
