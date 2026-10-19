@@ -36,10 +36,6 @@ clusters:
             email: artem.lajko@iits-consulting.de
             name: letsencrypt-prod
             server: https://acme-v02.api.letsencrypt.org/directory
-      chaos-mesh:
-        status: disabled
-      chaoskube:
-        status: disabled
       cluster-api-stackit:
         status: enabled
       external-dns:
@@ -60,8 +56,6 @@ clusters:
         status: enabled
       kyverno-policy-reporter:
         status: enabled
-      litmus:
-        status: disabled
       loki:
         status: enabled
       longhorn:
@@ -70,13 +64,21 @@ clusters:
         status: disabled
       metrics-server:
         status: disabled
+      opentelemetry-collector:
+        status: enabled
+      opentelemetry-operator:
+        status: enabled
       oauth2-proxy:
         status: enabled
       projectsveltos:
         status: disabled
       reloader:
         status: disabled
+      tempo:
+        status: enabled
       traefik:
+        status: enabled
+      uptime-kuma:
         status: enabled
       vcluster:
         status: disabled

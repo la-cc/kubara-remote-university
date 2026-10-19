@@ -2,11 +2,11 @@
 apiVersion: kubara.io/v1alpha1
 kind: ServiceDefinition
 metadata:
-  name: litmus
+  name: opentelemetry-collector
   annotations:
-    kubara.io/category: chaos-engineering
+    kubara.io/category: observability
 spec:
-  chartPath: litmus
+  chartPath: opentelemetry-collector
   status: enabled
   clusterTypes:
     - hub

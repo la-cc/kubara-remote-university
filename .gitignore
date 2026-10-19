@@ -83,3 +83,5 @@ spoke-*.yaml
 vcluster-*.yaml
 
 kamaji-*.yaml
+
+zparked/

@@ -2,11 +2,11 @@
 apiVersion: kubara.io/v1alpha1
 kind: ServiceDefinition
 metadata:
-  name: chaoskube
+  name: cluster-api-stackit
   annotations:
-    kubara.io/category: chaos-engineering
+    kubara.io/category: cluster-management
 spec:
-  chartPath: chaoskube
+  chartPath: cluster-api-stackit
   status: enabled
   clusterTypes:
     - hub

@@ -2,11 +2,11 @@
 apiVersion: kubara.io/v1alpha1
 kind: ServiceDefinition
 metadata:
-  name: chaos-mesh
+  name: kamaji
   annotations:
-    kubara.io/category: chaos-engineering
+    kubara.io/category: multi-tenancy
 spec:
-  chartPath: chaos-mesh
+  chartPath: kamaji
   status: enabled
   clusterTypes:
     - hub

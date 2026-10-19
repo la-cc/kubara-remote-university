@@ -84,6 +84,7 @@ kube-prometheus-stack:
       enabled: false
     prometheusSpec:
       logFormat: json
+      enableRemoteWriteReceiver: true
       resources:
         requests:
           cpu: 50m

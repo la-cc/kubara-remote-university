@@ -1,5 +1,0 @@
-litmus:
-  portal:
-    frontend:
-      service:
-        type: ClusterIP

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: kamaji
+description: Umbrella chart for the Kamaji hosted control plane manager and tenant control planes.
+type: application
+version: 1.0.0
+dependencies:
+  - name: kamaji
+    version: 0.0.0+latest
+    repository: https://clastix.github.io/charts
+    condition: kamaji.enabled

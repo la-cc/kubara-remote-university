@@ -1,9 +1,0 @@
-apiVersion: v2
-name: chaoskube
-description: Umbrella chart for chaoskube
-type: application
-version: 1.0.0
-dependencies:
-  - name: chaoskube
-    repository: https://linki.github.io/chaoskube/
-    version: 0.6.0
