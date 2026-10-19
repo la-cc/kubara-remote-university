@@ -15,6 +15,8 @@ tempo:
     size: 10Gi
   serviceMonitor:
     enabled: true
+    additionalLabels:
+      monitoring.instance: hub-dev
   resources:
     requests:
       cpu: 50m

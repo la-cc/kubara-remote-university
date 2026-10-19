@@ -23,11 +23,6 @@ opentelemetry-collector:
       enabled: false
     metrics:
       enabled: true
-    prom-exporter:
-      enabled: true
-      containerPort: 8889
-      servicePort: 8889
-      protocol: TCP
   resources:
     requests:
       cpu: 50m
@@ -38,7 +33,8 @@ opentelemetry-collector:
     enabled: true
     metricsEndpoints:
       - port: metrics
-      - port: prom-exporter
+    extraLabels:
+      monitoring.instance: hub-dev
   config:
     receivers:
       jaeger: null
@@ -66,8 +62,8 @@ opentelemetry-collector:
         endpoint: tempo.tempo.svc.cluster.local:4317
         tls:
           insecure: true
-      prometheus:
-        endpoint: ${env:MY_POD_IP}:8889
+      prometheusremotewrite:
+        endpoint: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc:9090/prometheus/api/v1/write
         resource_to_telemetry_conversion:
           enabled: true
     service:
@@ -79,5 +75,5 @@ opentelemetry-collector:
         metrics:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, resource/platform, batch]
-          exporters: [prometheus]
+          exporters: [prometheusremotewrite]
         logs: null

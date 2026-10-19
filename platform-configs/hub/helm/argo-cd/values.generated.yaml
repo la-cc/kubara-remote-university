@@ -98,6 +98,9 @@ bootstrapValues:
         opentelemetry-collector:
           name: opentelemetry-collector
           path: opentelemetry-collector
+        opentelemetry-operator:
+          name: opentelemetry-operator
+          path: opentelemetry-operator
         projectsveltos:
           name: projectsveltos
           path: projectsveltos
@@ -150,6 +153,7 @@ inClusterSecretLabels:
   metrics-server: "disabled"
   oauth2-proxy: "enabled"
   opentelemetry-collector: "enabled"
+  opentelemetry-operator: "enabled"
   projectsveltos: "disabled"
   reloader: "disabled"
   tempo: "enabled"
