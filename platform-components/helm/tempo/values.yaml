@@ -21,7 +21,3 @@ tempo:
     requests:
       cpu: 50m
       memory: 256Mi
-
-# Grafana datasource picked up by the kube-prometheus-stack sidecar
-grafanaDatasource:
-  enabled: true
