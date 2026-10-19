@@ -46,12 +46,6 @@ bootstrapValues:
         cert-manager:
           name: cert-manager
           path: cert-manager
-        chaos-mesh:
-          name: chaos-mesh
-          path: chaos-mesh
-        chaoskube:
-          name: chaoskube
-          path: chaoskube
         cluster-api-stackit:
           name: cluster-api-stackit
           path: cluster-api-stackit
@@ -85,9 +79,6 @@ bootstrapValues:
         kyverno-policy-reporter:
           name: kyverno-policy-reporter
           path: kyverno-policy-reporter
-        litmus:
-          name: litmus
-          path: litmus
         loki:
           name: loki
           path: loki
@@ -104,15 +95,24 @@ bootstrapValues:
         oauth2-proxy:
           name: oauth2-proxy
           path: oauth2-proxy
+        opentelemetry-collector:
+          name: opentelemetry-collector
+          path: opentelemetry-collector
         projectsveltos:
           name: projectsveltos
           path: projectsveltos
         reloader:
           name: reloader
           path: reloader
+        tempo:
+          name: tempo
+          path: tempo
         traefik:
           name: traefik
           path: traefik
+        uptime-kuma:
+          name: uptime-kuma
+          path: uptime-kuma
         vcluster:
           name: vcluster
           path: vcluster
@@ -133,8 +133,6 @@ inClusterSecretLabels:
 ## Hub labels
   argocd: "enabled"
   cert-manager: "enabled"
-  chaos-mesh: "disabled"
-  chaoskube: "disabled"
   cluster-api-stackit: "enabled"
   crossplane: "disabled"
   external-dns: "enabled"
@@ -146,15 +144,17 @@ inClusterSecretLabels:
   kyverno: "enabled"
   kyverno-policies: "enabled"
   kyverno-policy-reporter: "enabled"
-  litmus: "disabled"
   loki: "enabled"
   longhorn: "disabled"
   metallb: "disabled"
   metrics-server: "disabled"
   oauth2-proxy: "enabled"
+  opentelemetry-collector: "enabled"
   projectsveltos: "disabled"
   reloader: "disabled"
+  tempo: "enabled"
   traefik: "enabled"
+  uptime-kuma: "enabled"
   vcluster: "disabled"
   vcluster-platform: "enabled"
   velero: "disabled"
