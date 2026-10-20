@@ -3,6 +3,12 @@ kube-prometheus-stack:
     prometheusSpec:
       enableRemoteWriteReceiver: true
   grafana:
+    sidecar:
+      dashboards:
+        searchNamespace: ALL
+        folderAnnotation: grafana_folder
+        provider:
+          foldersFromFilesStructure: true
     # Lists are replaced by Helm, so loki from values.generated.yaml is repeated here
     additionalDataSources:
       - access: proxy
