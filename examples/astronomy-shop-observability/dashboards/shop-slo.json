@@ -1,7 +1,7 @@
 {
   "uid": "shop-slo",
   "id": null,
-  "version": 2,
+  "version": 3,
   "title": "Astronomy Shop - SLO / Error Budget",
   "tags": [
     "shop",
@@ -12,7 +12,7 @@
   "editable": false,
   "refresh": "1m",
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "templating": {
@@ -142,17 +142,17 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "slo:sli_error:ratio_rate5m{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}",
+          "expr": "clamp_min(slo:sli_error:ratio_rate5m{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}, 0.01)",
           "legendFormat": "5m"
         },
         {
           "refId": "B",
-          "expr": "slo:sli_error:ratio_rate1h{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}",
+          "expr": "clamp_min(slo:sli_error:ratio_rate1h{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}, 0.01)",
           "legendFormat": "1h"
         },
         {
           "refId": "C",
-          "expr": "slo:sli_error:ratio_rate6h{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}",
+          "expr": "clamp_min(slo:sli_error:ratio_rate6h{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}, 0.01)",
           "legendFormat": "6h"
         }
       ],
@@ -167,7 +167,7 @@
               "type": "log",
               "log": 10
             },
-            "axisSoftMin": 0.1
+            "axisSoftMin": 0.01
           },
           "thresholds": {
             "mode": "absolute",
@@ -188,7 +188,8 @@
           }
         },
         "overrides": []
-      }
+      },
+      "description": "Burn rate = error ratio / error budget. 1 = budget lasts exactly 30 days. Values are clamped at 0.01 so periods without errors stay visible on the log axis."
     },
     {
       "id": 5,
@@ -227,7 +228,52 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "5.."
+              "options": "^2..$"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^3..$"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^4..$"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^5..$"
             },
             "properties": [
               {
@@ -242,14 +288,14 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "2.."
+              "options": "^0$"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
                   "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "purple"
                 }
               }
             ]
