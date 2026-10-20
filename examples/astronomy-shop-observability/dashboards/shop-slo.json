@@ -1,19 +1,20 @@
 {
-  "uid": "shop-slo",
-  "id": null,
-  "version": 3,
-  "title": "Astronomy Shop - SLO / Error Budget",
+  "uid": "shop-slo-incident",
+  "title": "Astronomy Shop - SLO Incident Review",
   "tags": [
     "shop",
-    "slo"
+    "slo",
+    "incident"
   ],
+  "description": "Incident review for the shop SLO test: impact, detection by the burn-rate alerts and cause at the ingress.",
   "timezone": "browser",
   "schemaVersion": 39,
-  "editable": false,
-  "refresh": "1m",
+  "version": 1,
+  "editable": true,
+  "refresh": "",
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2026-10-19T19:30:00.000Z",
+    "to": "2026-10-19T22:30:00.000Z"
   },
   "templating": {
     "list": [
@@ -26,84 +27,87 @@
       }
     ]
   },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "name": "frontend scaled",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "enable": true,
+        "iconColor": "orange",
+        "expr": "changes(kube_deployment_spec_replicas{namespace=\"shop\", deployment=\"frontend\"}[2m]) > 0",
+        "step": "60s",
+        "titleFormat": "frontend replicas changed",
+        "textFormat": "Deployment frontend was scaled"
+      }
+    ]
+  },
   "panels": [
     {
       "id": 1,
-      "type": "gauge",
-      "title": "Current SLI (30d availability, SLO 99.5%)",
+      "type": "row",
+      "title": "Impact \u2013 what did the incident cost?",
+      "collapsed": false,
       "gridPos": {
-        "h": 8,
-        "w": 8,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "expr": "1 - slo:sli_error:ratio_rate30d{service=\"shop\"}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percentunit",
-          "min": 0.9,
-          "max": 1,
-          "decimals": 3,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 0.995
-              },
-              {
-                "color": "green",
-                "value": 0.998
-              }
-            ]
-          }
-        },
-        "overrides": []
-      }
+      "panels": []
     },
     {
       "id": 2,
-      "type": "bargauge",
-      "title": "Remaining error budget (30d)",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 0
-      },
+      "type": "stat",
+      "title": "Availability",
+      "description": "Share of successful requests (non-5xx) in the selected time range. SLO target: 99.5 %.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
-          "expr": "clamp_min(1 - slo:sli_error:ratio_rate30d{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"}, 0)",
-          "legendFormat": "remaining"
+          "expr": "1 - sum(increase(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\", code=~\"5..\"}[$__range])) / sum(increase(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\"}[$__range]))",
+          "instant": true
         }
       ],
       "options": {
-        "orientation": "horizontal",
-        "displayMode": "gradient"
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
       },
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
-          "min": 0,
-          "max": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -113,31 +117,469 @@
               },
               {
                 "color": "orange",
-                "value": 0.25
+                "value": 0.99
               },
               {
                 "color": "green",
-                "value": 0.5
+                "value": 0.995
               }
             ]
-          }
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2
         },
         "overrides": []
       }
     },
     {
       "id": 3,
-      "type": "timeseries",
-      "title": "Burn rate (5m, 1h, 6h)",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 0
-      },
+      "type": "stat",
+      "title": "Monthly budget consumed",
+      "description": "Failed requests in this time range as a share of the whole 30-day error budget (0.5 % of the expected monthly requests). Paging threshold of the fast-burn alert: 2 %.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\", code=~\"5..\"}[$__range])) / (scalar(slo:error_budget:ratio{service=\"shop\"}) * sum(rate(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\"}[$__range])) * 30 * 24 * 3600)",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.02
+              },
+              {
+                "color": "red",
+                "value": 0.05
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Peak burn rate (5m)",
+      "description": "Highest 5-minute burn rate in the time range. 1 = budget lasts exactly 30 days, 14.4 = fast-burn threshold.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max_over_time((slo:sli_error:ratio_rate5m{service=\"shop\"} / slo:error_budget:ratio{service=\"shop\"})[$__range:1m])",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 6
+              },
+              {
+                "color": "red",
+                "value": 14.4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Failed requests",
+      "description": "Number of 5xx responses at the Traefik ingress in the time range.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\", code=~\"5..\"}[$__range]))",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Outage duration",
+      "description": "Minutes in which the frontend deployment had no available replica.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum_over_time((max(kube_deployment_status_replicas_available{namespace=\"shop\", deployment=\"frontend\"}) == bool 0)[$__range:1m])",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Fast burn firing",
+      "description": "Minutes in which ShopErrorBudgetBurnFast was firing. Outage duration minus this value \u2248 detection lag plus resolve delay.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum_over_time((max(ALERTS{alertname=\"ShopErrorBudgetBurnFast\", alertstate=\"firing\"}) or vector(0))[$__range:1m])",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 8,
+      "type": "row",
+      "title": "Detection \u2013 how did the SLO react?",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "panels": []
+    },
+    {
+      "id": 9,
+      "type": "state-timeline",
+      "title": "Alert states",
+      "description": "Inactive \u2192 Pending (condition true, waiting for 'for') \u2192 Firing.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (alertname) (ALERTS{service=\"shop\", alertstate=\"firing\"}) * 2\nor max by (alertname) (ALERTS{service=\"shop\", alertstate=\"pending\"})\nor label_replace(vector(0), \"alertname\", \"ShopErrorBudgetBurnFast\", \"\", \"\")\nor label_replace(vector(0), \"alertname\", \"ShopErrorBudgetBurnSlow\", \"\", \"\")",
+          "legendFormat": "{{alertname}}",
+          "interval": "30s"
+        },
+        {
+          "refId": "B",
+          "expr": "max(kube_deployment_status_replicas_available{namespace=\"shop\", deployment=\"frontend\"})",
+          "legendFormat": "frontend replicas",
+          "interval": "30s",
+          "hide": false
+        }
+      ],
+      "options": {
+        "showValue": "never",
+        "mergeValues": true,
+        "rowHeight": 0.8,
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "Inactive",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "Pending",
+                  "color": "orange"
+                },
+                "2": {
+                  "text": "Firing",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "frontend replicas"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "Down",
+                        "color": "red"
+                      }
+                    }
+                  },
+                  {
+                    "type": "range",
+                    "options": {
+                      "from": 1,
+                      "to": 1000,
+                      "result": {
+                        "text": "Up",
+                        "color": "green"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Burn rate (5m, 1h, 6h)",
+      "description": "Error ratio divided by the error budget (0.5 %). Fast burn needs 5m AND 1h above 14.4, slow burn needs 1h AND 6h above 6. Clamped at 0.01 so error-free periods stay visible on the log axis.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 12
       },
       "targets": [
         {
@@ -156,18 +598,34 @@
           "legendFormat": "6h"
         }
       ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "none",
+          "decimals": 1,
           "custom": {
-            "thresholdsStyle": {
-              "mode": "line+area"
-            },
+            "lineWidth": 2,
+            "fillOpacity": 0,
             "scaleDistribution": {
               "type": "log",
               "log": 10
             },
-            "axisSoftMin": 0.01
+            "axisSoftMin": 0.01,
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
           },
           "thresholds": {
             "mode": "absolute",
@@ -187,32 +645,104 @@
             ]
           }
         },
-        "overrides": []
-      },
-      "description": "Burn rate = error ratio / error budget. 1 = budget lasts exactly 30 days. Values are clamped at 0.01 so periods without errors stay visible on the log axis."
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "5m"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1h"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "6h"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              }
+            ]
+          }
+        ]
+      }
     },
     {
-      "id": 5,
-      "type": "timeseries",
-      "title": "Requests by status code (Traefik)",
-      "description": "Request rate at the ingress. During an outage traffic often drops, which dilutes the request-based error ratio.",
+      "id": 11,
+      "type": "row",
+      "title": "Cause \u2013 what happened at the ingress?",
+      "collapsed": false,
       "gridPos": {
-        "h": 8,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 21
       },
+      "panels": []
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Requests by status code",
+      "description": "Request rate at the Traefik ingress. During the outage traffic dropped from ~18 to ~1.6 req/s, which dilutes the request-based error ratio and delays the alerts.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "gridPos": {
+        "h": 9,
+        "w": 16,
+        "x": 0,
+        "y": 22
+      },
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (code) (rate(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\"}[5m]))",
+          "expr": "sum by (code) (rate(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\"}[1m]))",
           "legendFormat": "{{code}}"
         }
       ],
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "reqps",
@@ -220,7 +750,7 @@
             "stacking": {
               "mode": "normal"
             },
-            "fillOpacity": 40,
+            "fillOpacity": 60,
             "lineWidth": 1
           }
         },
@@ -265,7 +795,7 @@
                 "id": "color",
                 "value": {
                   "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "yellow"
                 }
               }
             ]
@@ -301,61 +831,74 @@
             ]
           }
         ]
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "calcs": [
-            "lastNotNull",
-            "max"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
       }
     },
     {
-      "id": 4,
-      "type": "table",
-      "title": "Firing alerts",
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
+      "id": 13,
+      "type": "timeseries",
+      "title": "Error ratio (1m)",
+      "description": "Share of 5xx responses per minute. Fast-burn threshold 7.2 %, slow-burn threshold 3 %.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 22
+      },
       "targets": [
         {
           "refId": "A",
-          "expr": "ALERTS{alertstate=\"firing\", service=\"shop\"} or ALERTS{alertstate=\"firing\", namespace=\"shop\"}",
-          "format": "table",
-          "instant": true
+          "expr": "sum(rate(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\", code=~\"5..\"}[1m])) / sum(rate(traefik_service_requests_total{exported_service=\"shop-shop-80@kubernetes\"}[1m]))",
+          "legendFormat": "5xx share"
         }
       ],
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "alertstate": true
-            },
-            "indexByName": {
-              "alertname": 0,
-              "severity": 1
-            }
-          }
+      "options": {
+        "legend": {
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single"
         }
-      ]
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          },
+          "custom": {
+            "fillOpacity": 25,
+            "lineWidth": 2,
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.03
+              },
+              {
+                "color": "red",
+                "value": 0.072
+              }
+            ]
+          }
+        },
+        "overrides": []
+      }
     }
   ]
 }
