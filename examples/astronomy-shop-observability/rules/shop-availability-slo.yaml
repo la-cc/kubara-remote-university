@@ -1,48 +1,78 @@
-# SLO: 99.5% of frontend server spans succeed over 30 days (error budget 0.5%)
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: shop-availability-slo
+  namespace: shop
   labels:
     release: kube-prometheus-stack
     monitoring.instance: hub-dev
 spec:
   groups:
-    - name: shop-sli
+    - name: shop-slo-recording
+      interval: 30s
       rules:
-        - record: shop:sli_error_ratio:rate5m
+        - record: slo:sli_error:ratio_rate5m
+          labels:
+            service: shop
           expr: |
-            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[5m])) or vector(0))
-            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[5m]))
-        - record: shop:sli_error_ratio:rate1h
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes", code=~"5.."}[5m]))
+            /
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes"}[5m]))
+        - record: slo:sli_error:ratio_rate1h
+          labels:
+            service: shop
           expr: |
-            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[1h])) or vector(0))
-            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[1h]))
-        - record: shop:sli_error_ratio:rate6h
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes", code=~"5.."}[1h]))
+            /
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes"}[1h]))
+        - record: slo:sli_error:ratio_rate6h
+          labels:
+            service: shop
           expr: |
-            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[6h])) or vector(0))
-            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[6h]))
-        - record: shop:sli_error_ratio:rate30d
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes", code=~"5.."}[6h]))
+            /
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes"}[6h]))
+        - record: slo:objective:ratio
+          labels:
+            service: shop
+          expr: vector(0.995)
+        - record: slo:error_budget:ratio
+          labels:
+            service: shop
+          expr: 1 - 0.995
+    # 30d window is expensive to compute, so it gets its own group with a longer interval
+    - name: shop-slo-recording-30d
+      interval: 5m
+      rules:
+        - record: slo:sli_error:ratio_rate30d
+          labels:
+            service: shop
           expr: |
-            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[30d])) or vector(0))
-            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[30d]))
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes", code=~"5.."}[30d]))
+            /
+            sum(rate(traefik_service_requests_total{exported_service="shop-shop-80@kubernetes"}[30d]))
     - name: shop-slo-alerts
       rules:
-        - alert: ShopErrorBudgetFastBurn
-          expr: shop:sli_error_ratio:rate1h / 0.005 > 14.4 and shop:sli_error_ratio:rate5m / 0.005 > 14.4
+        - alert: ShopErrorBudgetBurnFast
+          expr: |
+            slo:sli_error:ratio_rate5m{service="shop"} > (14.4 * 0.005)
+            and
+            slo:sli_error:ratio_rate1h{service="shop"} > (14.4 * 0.005)
           for: 2m
           labels:
             severity: critical
             service: shop
           annotations:
-            summary: "Shop burns its error budget 14x too fast"
-            description: "At this rate the 30 day error budget is gone in about 2 days."
-        - alert: ShopErrorBudgetSlowBurn
-          expr: shop:sli_error_ratio:rate6h / 0.005 > 6 and shop:sli_error_ratio:rate1h / 0.005 > 6
+            summary: "Shop is burning its 30 day error budget at 14x speed"
+            runbook: https://git.example.com/runbooks/shop-slo
+        - alert: ShopErrorBudgetBurnSlow
+          expr: |
+            slo:sli_error:ratio_rate1h{service="shop"} > (6 * 0.005)
+            and
+            slo:sli_error:ratio_rate6h{service="shop"} > (6 * 0.005)
           for: 15m
           labels:
             severity: warning
             service: shop
           annotations:
-            summary: "Shop burns its error budget 6x too fast"
-            description: "At this rate the 30 day error budget is gone in about 5 days."
+            summary: "Shop is burning its 30 day error budget at 6x speed"
