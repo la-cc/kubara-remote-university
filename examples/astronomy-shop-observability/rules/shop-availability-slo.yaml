@@ -1,0 +1,48 @@
+# SLO: 99.5% of frontend server spans succeed over 30 days (error budget 0.5%)
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: shop-availability-slo
+  labels:
+    release: kube-prometheus-stack
+    monitoring.instance: hub-dev
+spec:
+  groups:
+    - name: shop-sli
+      rules:
+        - record: shop:sli_error_ratio:rate5m
+          expr: |
+            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[5m])) or vector(0))
+            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[5m]))
+        - record: shop:sli_error_ratio:rate1h
+          expr: |
+            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[1h])) or vector(0))
+            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[1h]))
+        - record: shop:sli_error_ratio:rate6h
+          expr: |
+            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[6h])) or vector(0))
+            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[6h]))
+        - record: shop:sli_error_ratio:rate30d
+          expr: |
+            (sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[30d])) or vector(0))
+            / sum(rate(traces_span_metrics_calls_total{service_name="frontend", span_kind="SPAN_KIND_SERVER"}[30d]))
+    - name: shop-slo-alerts
+      rules:
+        - alert: ShopErrorBudgetFastBurn
+          expr: shop:sli_error_ratio:rate1h / 0.005 > 14.4 and shop:sli_error_ratio:rate5m / 0.005 > 14.4
+          for: 2m
+          labels:
+            severity: critical
+            service: shop
+          annotations:
+            summary: "Shop burns its error budget 14x too fast"
+            description: "At this rate the 30 day error budget is gone in about 2 days."
+        - alert: ShopErrorBudgetSlowBurn
+          expr: shop:sli_error_ratio:rate6h / 0.005 > 6 and shop:sli_error_ratio:rate1h / 0.005 > 6
+          for: 15m
+          labels:
+            severity: warning
+            service: shop
+          annotations:
+            summary: "Shop burns its error budget 6x too fast"
+            description: "At this rate the 30 day error budget is gone in about 5 days."

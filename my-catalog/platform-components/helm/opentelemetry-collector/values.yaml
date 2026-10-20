@@ -66,14 +66,16 @@ opentelemetry-collector:
         endpoint: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc:9090/prometheus/api/v1/write
         resource_to_telemetry_conversion:
           enabled: true
+    connectors:
+      spanmetrics: {}
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, resource/platform, batch]
-          exporters: [otlp/tempo]
+          exporters: [otlp/tempo, spanmetrics]
         metrics:
-          receivers: [otlp]
+          receivers: [otlp, spanmetrics]
           processors: [memory_limiter, k8sattributes, resource/platform, batch]
           exporters: [prometheusremotewrite]
         logs: null
