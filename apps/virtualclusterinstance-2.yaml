@@ -60,7 +60,7 @@ metadata:
   name: vcluster-2-passthrough
   namespace: vcluster-2
   annotations:
-    external-dns.alpha.kubernetes.io/target: hub-dev.stackit.run
+    external-dns.kubernetes.io/target: hub-dev.stackit.run
 spec:
   entryPoints:
     - websecure

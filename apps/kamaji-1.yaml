@@ -37,7 +37,7 @@ spec:
             enabled: true
             host: kamaji-1.hub-dev.stackit.run
             annotations:
-              external-dns.alpha.kubernetes.io/target: hub-dev.stackit.run
+              external-dns.kubernetes.io/target: hub-dev.stackit.run
   syncPolicy:
     automated:
       selfHeal: true
