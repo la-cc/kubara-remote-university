@@ -25,6 +25,18 @@ bootstrapValues:
           - kind: Secret
             name: cert-manager-webhook-ca
 
+  cluster:
+    - name: spoke-1
+      project: hub-dev
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: hub-dev
+      remoteRef:
+        remoteKey: hub/dev/argocd/spoke-1-dev
+        remoteKeyProperty: kubeconfig
+      additionalLabels:
+        kro: "disabled"
+        shop: "enabled"
 
 
   applicationSets:

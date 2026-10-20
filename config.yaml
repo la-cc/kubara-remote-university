@@ -38,6 +38,8 @@ clusters:
             server: https://acme-v02.api.letsencrypt.org/directory
       cluster-api-stackit:
         status: enabled
+      crossplane:
+        status: disabled
       external-dns:
         status: enabled
       external-secrets:
@@ -91,3 +93,23 @@ clusters:
           backupStorage:
             create: true
             region: eu01
+  - name: spoke-1
+    stage: dev
+    type: spoke
+    dnsName: spoke-1.hub.dev
+    argocd:
+      selfManaged: disabled
+      repo:
+        authMode: https
+        git:
+          configs:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+          components:
+            url: https://git.example.com/platform/repo.git
+            targetRevision: main
+    catalogs:
+      - my-catalog
+    services:
+      kro:
+        status: enabled
